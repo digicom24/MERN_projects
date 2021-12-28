@@ -4,10 +4,12 @@ const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
 
+const seeds = require("./seeds");
+const Product = require("./models/product");
+
 mongoose
-  .connect("mongodb://localhost:27017/test", {
+  .connect("mongodb://localhost:27017/farmStand", {
     useNewUrlParser: true,
-    keepAlive: true,
   })
   .then(() => {
     console.log("db Connection open!!!");
@@ -20,8 +22,10 @@ mongoose
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.get("/dogs", (req, res) => {
-  res.send("loloololo");
+app.get("/products", async (req, res) => {
+  const products = await Product.find({});
+  console.log(products);
+  res.render("products/index", { products });
 });
 
 app.get("", (req, res) => {
